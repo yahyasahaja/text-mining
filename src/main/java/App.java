@@ -6,6 +6,8 @@ import java.util.List;
 
 public class App {
     private List<SMS> listSms = new ArrayList<SMS>();
+    private List<String> listUnix = new ArrayList<String>();
+    private int unixLength = 0;
 
     //CSV Parser
     public App(Iterator<CSVRecord> recordIterator) {
@@ -35,10 +37,28 @@ public class App {
 //        listSms = smsCaseFolding;
 //    }
 
+
+    // Token Unik
+    public void termUnix(){
+        for (SMS sms : listSms){
+            for (String result : sms.getResult()){
+                if(!listUnix.contains(result)){
+                    listUnix.add(result);
+                    unixLength++;
+                }
+            }
+        }
+    }
+
     //Print Dataset
     public void printDataSet(){
-        for (SMS sms : listSms){
-            System.out.printf("%s \n", sms.getResult());
+//        for (SMS sms : listSms){
+//            System.out.printf("%s \n", sms.getResult());
+//        }
+
+        for (String unix : listUnix){
+            System.out.printf("%s \n", unix);
         }
+        System.out.println(unixLength);
     }
 }

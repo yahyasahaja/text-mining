@@ -19,6 +19,7 @@ public class Main {
             //Init App
             App app = new App(iterator);
 //            app.caseFolding();
+            app.termUnix();
             app.printDataSet();
 
         } catch (Exception e){
