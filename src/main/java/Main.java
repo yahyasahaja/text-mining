@@ -18,7 +18,7 @@ public class Main {
 
             //Init App
             App app = new App(iterator);
-            app.caseFolding();
+//            app.caseFolding();
             app.printDataSet();
 
         } catch (Exception e){
