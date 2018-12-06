@@ -6,12 +6,12 @@ public class Term {
     private double[] listTfIdf;
     private int df = 0;
     private int n;
-    private String nama;
     private double[] listWtfKelas;
     private int[] jumlahKelas;
     private double[] listRataKelas;
     private double[] listVarianKelas;
-    
+    private BigDecimal[] listGaussianKelas;
+    private String nama;
 
     public Term() {}
 
@@ -22,6 +22,7 @@ public class Term {
         listRataKelas = new double[3];
         listVarianKelas = new double[3];
         jumlahKelas = new int[3];
+        listGaussianKelas = new BigDecimal[3];
         this.nama = nama;
     }
 
@@ -46,15 +47,31 @@ public class Term {
         }
     }
 
+    public void hitungGaussian(){
+        for(int i = 0 ; i < listGaussianKelas.length; i++){
+            if (listVarianKelas[i] == 0) {
+//                listGaussianKelas[i] = Math.pow(10, -300);//1d * Math.pow(10, 10); // handling ketika varian nol.
+                listGaussianKelas[i] = BigDecimal.valueOf(1);
+            }else{
 
-    public double getIdf() {
-        return Math.log10((double)n / df);
-    }
+//                listGaussianKelas[i] = ((
+//                        Math.pow(Math.E, -(Math.pow(listWtfKelas[i] - listRataKelas[i], 2)) / (2 * listVarianKelas[i]))
+//                                / Math.sqrt(2 * Math.PI * listVarianKelas[i])
+//                )+ Math.pow(10, -300)); //Terlalu kecil untuk
 
+                listGaussianKelas[i] = BigDecimal.valueOf((
+                        Math.pow(Math.E, -(Math.pow(listWtfKelas[i] - listRataKelas[i], 2)) / (2 * listVarianKelas[i]))
+                                / Math.sqrt(2 * Math.PI * listVarianKelas[i])
+                )).add(BigDecimal.valueOf(1)); //Terlalu kecil untuk
 
-    public void calculateTfIdf() {
-        for (int i = 0; i < listTfIdf.length; i++) {
-            listTfIdf[i] *= getIdf();
+                //* Math.pow(10, 10); //untuk scaling dan handling ketika varian nol.
+//            System.out.println(-(Math.pow(listWtfKelas[i] - listRataKelas[i], 2)) / (2 * listVarianKelas[i]));
+//            System.out.println("Wtf Kelas : "+this.getNama()+", "+i+" : "+listWtfKelas[i]);
+//            System.out.println("Rata Kelas : "+this.getNama()+", "+i+" : "+listRataKelas[i]);
+//            System.out.println(this.getNama()+", "+i+" : "+listVarianKelas[i]);
+            }
+//            System.out.println(this.getNama()+", " + i +" : "+ listGaussianKelas[i]);
+//            System.out.printf("%s, %d: %.1000f\n", this.getNama(), i, listGaussianKelas[i]);
         }
     }
 
@@ -64,6 +81,10 @@ public class Term {
 
     public void setNama(String nama) {
         this.nama = nama;
+    }
+
+    public BigDecimal[] getListGaussianKelas() {
+        return listGaussianKelas;
     }
 
     public int[] getJumlahKelas() {
@@ -82,8 +103,18 @@ public class Term {
         return listVarianKelas;
     }
 
+    public double getIdf() {
+        return Math.log10((double)n / df);
+    }
+
     public double[] getListWtf() {
         return listTfIdf;
+    }
+
+    public void calculateTfIdf() {
+        for (int i = 0; i < listTfIdf.length; i++) {
+            listTfIdf[i] *= getIdf();
+        }
     }
 
 }

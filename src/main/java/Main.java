@@ -23,9 +23,10 @@ public class Main {
 
             //Init App
             app = new App(iterator, iteratorTest);
-						app.termUnix();
-						app.hitungTfIdf();
+            app.termUnix();
+            app.hitungTfIdf();
             app.hitungPrior();
+            app.testing();
 
         } catch (Exception e){
             e.printStackTrace();
