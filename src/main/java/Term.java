@@ -10,6 +10,7 @@ public class Term {
     private double[] listWtfKelas;
     private int[] jumlahKelas;
     private double[] listRataKelas;
+    private double[] listVarianKelas;
     
 
     public Term() {}
@@ -17,6 +18,10 @@ public class Term {
     public Term(int nDokument, String nama) {
         this.n = nDokument;
         listTfIdf = new double[nDokument];
+        listWtfKelas = new double[3];
+        listRataKelas = new double[3];
+        listVarianKelas = new double[3];
+        jumlahKelas = new int[3];
         this.nama = nama;
     }
 
@@ -32,6 +37,12 @@ public class Term {
     public void hitungRataKelas(){
         for(int i = 0 ; i < listRataKelas.length; i++){
             listRataKelas[i] = listWtfKelas[i]/jumlahKelas[i];
+        }
+    }
+
+    public void hitungVarians() {
+        for(int i = 0 ; i < listVarianKelas.length; i++){
+            listVarianKelas[i] /= jumlahKelas[i];
         }
     }
 
@@ -65,6 +76,10 @@ public class Term {
 
     public double[] getListRataKelas() {
         return listRataKelas;
+    }
+
+    public double[] getListVarianKelas() {
+        return listVarianKelas;
     }
 
     public double[] getListWtf() {

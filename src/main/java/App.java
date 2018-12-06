@@ -80,6 +80,18 @@ public class App {
 			term.hitungRataKelas();
 			// System.out.println(term.getNama() +" : "+
 			// Arrays.toString(term.getListRataKelas()));
+
+			// Hitung varian term kelas
+			for (int j = 0 ; j < listSms.size(); j++){
+				SMS sms = listSms.get(j);
+				int kelas = Integer.parseInt(sms.getLabel());
+
+				term.getListVarianKelas()[kelas] += Math.pow(term.getListWtf()[j] - term.getListRataKelas()[kelas], 2);
+			}
+			term.hitungVarians();
+
+//            System.out.println(unik +" : "+Arrays.toString(term.getListWtfKelas()));
+//            System.out.printf("%-15s : %s\n",unik, Arrays.toString(listTerm.get(unik).getListWtf()));
 		}
 	}
 
