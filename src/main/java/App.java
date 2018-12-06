@@ -1,16 +1,19 @@
 import org.apache.commons.csv.CSVRecord;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.*;
 
 public class App {
     private List<SMS> listSms = new ArrayList<SMS>();
-    private List<String> listUnix = new ArrayList<String>();
-    private int unixLength = 0;
+    private List<SMS> listSmsTest = new ArrayList<SMS>();
+    private List<String> listUnik = new ArrayList<String>();
+    private HashMap<String, Term> listTerm = new HashMap<String, Term>();
+    private static final int LABEL_LENGTH = 3;
+    private double[] priors = new double[LABEL_LENGTH];
 
     //CSV Parser
-    public App(Iterator<CSVRecord> recordIterator) {
+    public App(Iterator<CSVRecord> recordIterator, Iterator<CSVRecord> recordIteratorTest) {
+        //get data training
         while (recordIterator.hasNext()) {
             CSVRecord record = recordIterator.next();
             listSms.add(
@@ -19,46 +22,62 @@ public class App {
                             record.get(1)
                     )
             );
+            priors[Integer.parseInt(record.get(1))]++;
         }
-    }
 
-//    //Case Folding
-//    public void caseFolding(){
-//        List<SMS> smsCaseFolding = new ArrayList<SMS>();
-//        for (SMS sms : listSms){
-//            smsCaseFolding.add(
-//                new SMS(
-//                    sms.getBody().toLowerCase(),
-//                    sms.getLabel()
-//                )
-//            );
+        //get data test
+        while (recordIteratorTest.hasNext()){
+            CSVRecord record = recordIteratorTest.next();
+            listSmsTest.add(
+                new SMS(
+                        record.get(0),
+                        record.get(1)
+                )
+            );
+        }
+
+//        for (SMS sms : listSmsTest){
+//            System.out.println(sms.getResult());
 //        }
-//
-//        listSms = smsCaseFolding;
-//    }
-
+    }
 
     // Token Unik
     public void termUnix(){
         for (SMS sms : listSms){
             for (String result : sms.getResult()){
-                if(!listUnix.contains(result)){
-                    listUnix.add(result);
-                    unixLength++;
+                if(!listUnik.contains(result)){
+                    listUnik.add(result);
                 }
             }
         }
+//        System.out.println(listUnik.size());
     }
 
-    //Print Dataset
-    public void printDataSet(){
-//        for (SMS sms : listSms){
-//            System.out.printf("%s \n", sms.getResult());
-//        }
+    // Hitung TfIdf
+    public void hitungTfIdf(){
+        for (int i = 0 ; i < listUnik.size(); i++){
+            String unik = listUnik.get(i);
+            Term term = new Term();
 
-        for (String unix : listUnix){
-            System.out.printf("%s \n", unix);
+            for (int j = 0 ; j < listSms.size(); j++){
+                SMS sms = listSms.get(j);
+                int tf = 0;
+
+                for (String result : sms.getResult()){
+                    if(result.equals(unik)){
+                        tf++;
+                    }
+                }
+
+                if(!listTerm.containsKey(unik)) {
+                    listTerm.put(unik, new Term(listSms.size(), unik));
+                }
+
+                (term = listTerm.get(unik)).add(j, tf);
+
+            }
+
+            term.calculateTfIdf();
         }
-        System.out.println(unixLength);
     }
 }
