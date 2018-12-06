@@ -7,6 +7,10 @@ public class Term {
     private int df = 0;
     private int n;
     private String nama;
+    private double[] listWtfKelas;
+    private int[] jumlahKelas;
+    private double[] listRataKelas;
+    
 
     public Term() {}
 
@@ -25,6 +29,12 @@ public class Term {
         }
     }
 
+    public void hitungRataKelas(){
+        for(int i = 0 ; i < listRataKelas.length; i++){
+            listRataKelas[i] = listWtfKelas[i]/jumlahKelas[i];
+        }
+    }
+
 
     public double getIdf() {
         return Math.log10((double)n / df);
@@ -35,6 +45,30 @@ public class Term {
         for (int i = 0; i < listTfIdf.length; i++) {
             listTfIdf[i] *= getIdf();
         }
+    }
+
+    public String getNama() {
+        return nama;
+    }
+
+    public void setNama(String nama) {
+        this.nama = nama;
+    }
+
+    public int[] getJumlahKelas() {
+        return jumlahKelas;
+    }
+
+    public double[] getListWtfKelas() {
+        return listWtfKelas;
+    }
+
+    public double[] getListRataKelas() {
+        return listRataKelas;
+    }
+
+    public double[] getListWtf() {
+        return listTfIdf;
     }
 
 }

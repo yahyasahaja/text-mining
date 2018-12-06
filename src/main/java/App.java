@@ -68,6 +68,18 @@ public class App {
 			}
 
 			term.calculateTfIdf();
+
+			// Hitung rata term kelas
+			for (int j = 0; j < listSms.size(); j++) {
+				SMS sms = listSms.get(j);
+				int kelas = Integer.parseInt(sms.getLabel());
+
+				term.getListWtfKelas()[kelas] += term.getListWtf()[j];
+				term.getJumlahKelas()[kelas]++;
+			}
+			term.hitungRataKelas();
+			// System.out.println(term.getNama() +" : "+
+			// Arrays.toString(term.getListRataKelas()));
 		}
 	}
 
